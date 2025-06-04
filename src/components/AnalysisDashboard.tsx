@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -128,10 +127,6 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
     }
   }, [currentPhase, dossierId, selectedNode]);
 
-  if (currentPhase === 'processing') {
-    return <AIProcessing companyName={dossier.name} />;
-  }
-
   const getRiskScoreColor = (score: number) => {
     if (score >= 80) return 'text-red-400';
     if (score >= 60) return 'text-orange-400';
@@ -148,6 +143,10 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
       default: return 'bg-gray-600';
     }
   };
+
+  if (currentPhase === 'processing') {
+    return <AIProcessing companyName={dossier.name} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
