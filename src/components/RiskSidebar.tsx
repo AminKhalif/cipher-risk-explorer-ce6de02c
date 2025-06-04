@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { AlertTriangle, FileText, Target, Shield, Brain, ChevronDown, ChevronUp, Zap } from 'lucide-react';
+import { AlertTriangle, FileText, Target, Shield, Brain, ChevronDown, ChevronUp, Zap, Building, Users } from 'lucide-react';
 
 interface RiskSidebarProps {
   selectedNode: string | null;
@@ -23,86 +23,122 @@ const RiskSidebar: React.FC<RiskSidebarProps> = ({ selectedNode, analysisData, d
 
   const getNodeDetails = (nodeId: string) => {
     const nodeMap: Record<string, any> = {
-      'eastern-star': {
-        name: 'Eastern Star Holdings',
+      'shenyang-industrial': {
+        name: 'Shenyang Industrial Holdings Co., Ltd.',
         risk: 'HIGH',
         category: 'Foreign Ownership',
-        aiSummary: 'Majority foreign control detected - 60% voting shares held by Country X entity',
+        aiSummary: 'Chinese state-linked conglomerate with majority control - 60% voting shares creates critical national security vulnerability',
         quickFacts: [
-          'Controls 60% voting shares',
-          'Country X jurisdiction',
-          'Potential state influence'
+          'Controls 60% voting shares (majority)',
+          'Chinese state-owned enterprise',
+          'Headquartered in Shenyang, China',
+          'Potential government influence channel'
         ],
         detailedFindings: [
-          'Controls 60% voting shares - majority foreign ownership creating potential national security vulnerability',
-          'Country X entity with unclear beneficial ownership structure',
+          'Holds controlling 60% voting share position, exceeding critical FOCI thresholds',
+          'Classified as state-owned enterprise under Chinese government oversight',
           'Voting control enables influence over strategic corporate decisions, technology access, and business direction',
-          'Concentration of control in single foreign entity amplifies FOCI risk profile'
+          'Concentration of control in single foreign SOE amplifies national security risk profile',
+          'Parent company has documented ties to Chinese military-industrial complex'
         ],
-        evidence: 'Ownership_Structure.txt - "Eastern Star Holdings (Country X): 60% ownership (Voting Shares)"',
+        evidence: 'Ownership_Structure.txt - "Shenyang Industrial Holdings (China): 60% ownership (Voting Shares)"',
         concernArea: 'Foreign Ownership',
-        aiExplanation: 'This represents a critical FOCI risk as the foreign entity maintains controlling interest in a U.S. company with potential dual-use technology applications. The concentration of control exceeds typical national security thresholds.',
+        aiExplanation: 'This represents a critical FOCI risk as the Chinese state-owned entity maintains controlling interest in a U.S. company with dual-use technology. The concentration of control exceeds all national security thresholds and creates direct channels for foreign government influence.',
         mitigationSuggestions: [
-          'Reduce foreign ownership below 25%',
-          'Implement voting trust arrangements',
-          'Establish security control agreements'
+          'Reduce foreign ownership below 25% threshold',
+          'Implement voting trust arrangements with U.S. trustees',
+          'Establish security control agreements with government oversight',
+          'Consider forced divestiture if national security requires'
         ],
         threatLevel: 'CRITICAL',
-        confidence: 'HIGH'
+        confidence: 'HIGH',
+        entityDetails: {
+          fullName: 'Shenyang Industrial Holdings Co., Ltd.',
+          jurisdiction: 'People\'s Republic of China',
+          businessType: 'State-Owned Enterprise',
+          established: '1999',
+          ownership: '60% voting shares',
+          marketCap: '$8.2B USD',
+          employees: '45,000+'
+        }
       },
-      'director-1': {
-        name: 'Director 1',
+      'li-xiaoping': {
+        name: 'Li Xiaoping',
         risk: 'HIGH', 
         category: 'Foreign Control (Board/Management)',
-        aiSummary: 'Foreign-appointed board member with potential influence over sensitive decisions',
+        aiSummary: 'Chairman appointed by Chinese SOE with government background - direct foreign control channel',
         quickFacts: [
-          'Appointed by Eastern Star',
-          'Country X national',
-          'Part of foreign majority (3/5)'
+          'Chairman of the Board',
+          'Appointed by Shenyang Industrial Holdings',
+          'Chinese national with government ties',
+          'Former municipal government official'
         ],
         detailedFindings: [
-          'Appointee of majority foreign shareholder Eastern Star Holdings',
-          'Country X national serving on board of U.S. technology company',
-          'Part of foreign-controlled board majority (3 out of 5 seats)',
-          'Access to strategic planning, technology roadmaps, and sensitive business information'
+          'Serves as Chairman appointed by majority foreign shareholder Shenyang Industrial Holdings',
+          'Chinese national with documented government service background',
+          'Former Deputy Director of Shenyang Municipal Government Economic Development Committee',
+          'Direct authority over board decisions, strategic planning, and corporate governance',
+          'Access to sensitive technology information and business intelligence'
         ],
-        evidence: 'Board_Composition.txt - "Director 1: Appointee of Eastern Star Holdings, National of Country X"',
+        evidence: 'Board_Composition.txt - "Li Xiaoping, Appointee of Shenyang Industrial Holdings, Chinese National"',
         concernArea: 'Foreign Control (Board/Management)',
-        aiExplanation: 'Foreign nationals holding board positions, especially when appointed by foreign shareholders, can influence strategic decisions and access sensitive information. The foreign board majority creates significant governance risks.',
+        aiExplanation: 'Foreign nationals in chairman positions, especially those with government backgrounds appointed by foreign SOEs, represent direct foreign control channels. The combination of government service and SOE appointment creates multiple avenues for foreign influence.',
         mitigationSuggestions: [
-          'Limit foreign board representation',
-          'Implement security agreements',
-          'Restrict access to sensitive information'
+          'Limit foreign board representation to minority positions',
+          'Implement security agreements restricting access to sensitive information',
+          'Require U.S. citizen chairman for companies with dual-use technology',
+          'Establish independent board committees for critical decisions'
         ],
         threatLevel: 'HIGH',
-        confidence: 'HIGH'
+        confidence: 'HIGH',
+        entityDetails: {
+          fullName: 'Li Xiaoping',
+          nationality: 'Chinese',
+          title: 'Chairman of the Board',
+          appointedBy: 'Shenyang Industrial Holdings',
+          background: 'Former Deputy Director, Shenyang Municipal Government',
+          education: 'Beijing University (Economics), CCP Party School',
+          tenure: '3 years'
+        }
       },
-      'cto': {
-        name: 'Ivan Vorpatril (CTO)',
+      'wei-chen': {
+        name: 'Wei Chen',
         risk: 'MEDIUM',
         category: 'Key Personnel Foreign Ties',
-        aiSummary: 'Dual citizen CTO with foreign government laboratory background',
+        aiSummary: 'Dual citizen CTO with Chinese government research background - technology access concerns',
         quickFacts: [
-          'Dual US/Country X citizen',
-          'Former X State Lab employee',
-          'Controls technical operations'
+          'Chief Technology Officer',
+          'Dual US/Chinese citizenship',
+          'Former Beijing Advanced Technology Institute',
+          'Holds US Secret clearance'
         ],
         detailedFindings: [
-          'Dual citizen (US/Country X) in Chief Technology Officer role',
-          'Former employee of X State Innovations Lab (potential government ties)',
-          'Direct access to company\'s dual-use technology and intellectual property',
-          'Key decision-maker for technical strategy and product development'
+          'Dual citizen (US/China) serving as Chief Technology Officer with full technology access',
+          'Former Senior Researcher at Beijing Advanced Technology Institute (government-affiliated)',
+          'Direct access to company\'s dual-use technology and intellectual property development',
+          'Key decision-maker for technical strategy, product development, and research direction',
+          'Published research with Chinese government co-authors in sensitive technology areas'
         ],
-        evidence: 'Key_Personnel.txt - "CTO: Ivan Vorpatril, Dual Citizen (US, Country X), Former Employee of X State Innovations Lab"',
+        evidence: 'Key_Personnel.txt - "Wei Chen, Dual Citizen (US, China), Former Employee of Beijing Advanced Technology Institute"',
         concernArea: 'Key Personnel Foreign Ties',
-        aiExplanation: 'While dual citizenship isn\'t inherently problematic, the combination with foreign government laboratory experience in a CTO role creates potential channels for technology transfer and requires monitoring.',
+        aiExplanation: 'While dual citizenship isn\'t inherently problematic, the combination with Chinese government research institute background in a CTO role creates potential channels for technology transfer. The position provides access to critical IP and strategic technology decisions.',
         mitigationSuggestions: [
-          'Background investigation',
-          'Technology access restrictions',
-          'Regular security clearance review'
+          'Enhanced background investigation and periodic reviews',
+          'Technology access restrictions for sensitive projects',
+          'Regular security clearance review and monitoring',
+          'Consider alternative reporting structure for critical technology development'
         ],
         threatLevel: 'MEDIUM',
-        confidence: 'MEDIUM'
+        confidence: 'MEDIUM',
+        entityDetails: {
+          fullName: 'Wei Chen',
+          nationality: 'Dual (US/Chinese)',
+          title: 'Chief Technology Officer',
+          background: 'Former Senior Researcher, Beijing Advanced Technology Institute',
+          education: 'Tsinghua University (PhD Computer Science), MIT (Post-doc)',
+          clearance: 'Secret (US)',
+          tenure: '4 years'
+        }
       }
     };
 
@@ -210,6 +246,24 @@ const RiskSidebar: React.FC<RiskSidebarProps> = ({ selectedNode, analysisData, d
             </div>
           </div>
         </div>
+
+        {/* Entity Details */}
+        {nodeDetails.entityDetails && (
+          <div>
+            <h3 className="font-semibold text-white mb-3 flex items-center text-sm">
+              <Building className="h-4 w-4 mr-2 text-cyan-400" />
+              Entity Information
+            </h3>
+            <div className="space-y-2">
+              {Object.entries(nodeDetails.entityDetails).map(([key, value]) => (
+                <div key={key} className="flex justify-between items-center p-2 bg-slate-700/20 rounded text-sm">
+                  <span className="text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                  <span className="text-gray-300 font-medium">{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Quick Facts */}
         <div>

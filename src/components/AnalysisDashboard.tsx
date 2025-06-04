@@ -60,8 +60,8 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
               {
                 type: 'Foreign Ownership',
                 severity: 'HIGH',
-                description: 'Eastern Star Holdings controls 60% voting shares - majority foreign control',
-                evidence: 'Ownership_Structure.txt - Eastern Star Holdings (Country X): 60% ownership',
+                description: 'Shenyang Industrial Holdings controls 60% voting shares - majority foreign control',
+                evidence: 'Ownership_Structure.txt - Shenyang Industrial Holdings (China): 60% ownership',
                 category: 'Foreign Ownership',
                 confidence: 'HIGH',
                 impact: 'CRITICAL'
@@ -69,8 +69,8 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
               {
                 type: 'Foreign Board Control',
                 severity: 'HIGH', 
-                description: 'Foreign nationals hold 3/5 board seats via Eastern Star appointments',
-                evidence: 'Board_Composition.txt - Multiple Country X nationals on board',
+                description: 'Chinese nationals hold 3/5 board seats via Shenyang appointments',
+                evidence: 'Board_Composition.txt - Multiple Chinese nationals on board',
                 category: 'Foreign Control (Board/Management)',
                 confidence: 'HIGH',
                 impact: 'HIGH'
@@ -78,8 +78,8 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
               {
                 type: 'Key Personnel Ties',
                 severity: 'MEDIUM',
-                description: 'CTO has dual citizenship and foreign government laboratory background',
-                evidence: 'Key_Personnel.txt - Ivan Vorpatril background analysis',
+                description: 'CTO has dual citizenship and former government research background',
+                evidence: 'Key_Personnel.txt - Wei Chen background analysis',
                 category: 'Key Personnel Foreign Ties',
                 confidence: 'MEDIUM',
                 impact: 'MEDIUM'
@@ -123,7 +123,7 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
   useEffect(() => {
     if (currentPhase === 'visualization' && dossierId === 'red-october' && !selectedNode) {
       setTimeout(() => {
-        setSelectedNode('eastern-star');
+        setSelectedNode('shenyang-industrial');
       }, 1000);
     }
   }, [currentPhase, dossierId, selectedNode]);
@@ -238,7 +238,7 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ dossierId, onBack
             <div className={`h-px w-8 ${currentPhase === 'mitigation' ? 'bg-blue-400' : 'bg-gray-600'} transition-colors duration-300`} />
             
             <button
-              onClick={() => currentPhase !== 'processing' && dossierId === 'red-october' && setCurrentPhase('mitigation')}
+              onClick={() => dossierId === 'red-october' && setCurrentPhase('mitigation')}
               disabled={dossierId !== 'red-october'}
               className={`flex items-center space-x-3 px-4 py-2 rounded-full transition-all duration-300 ${
                 currentPhase === 'mitigation' 

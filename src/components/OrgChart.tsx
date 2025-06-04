@@ -34,14 +34,17 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
         },
         entities: [
           {
-            id: 'eastern-star',
-            name: 'Eastern Star Holdings',
+            id: 'shenyang-industrial',
+            name: 'Shenyang Industrial Holdings',
             type: 'shareholder',
             risk: 'HIGH',
             ownership: '60%',
-            country: 'Country X',
-            details: 'Foreign entity with controlling stake',
-            threat: 'CRITICAL'
+            country: 'China',
+            details: 'Chinese state-linked conglomerate with controlling stake',
+            threat: 'CRITICAL',
+            fullName: 'Shenyang Industrial Holdings Co., Ltd.',
+            jurisdiction: 'People\'s Republic of China',
+            businessType: 'State-Owned Enterprise'
           },
           {
             id: 'us-founders',
@@ -50,7 +53,10 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
             risk: 'LOW',
             ownership: '20%',
             country: 'USA',
-            details: 'Domestic founding group'
+            details: 'Domestic founding group',
+            fullName: 'US Founders Collective LLC',
+            jurisdiction: 'Delaware, USA',
+            businessType: 'Founder Group'
           },
           {
             id: 'us-angels',
@@ -59,76 +65,94 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
             risk: 'LOW', 
             ownership: '20%',
             country: 'USA',
-            details: 'Domestic angel investor group'
+            details: 'Domestic angel investor group',
+            fullName: 'US Angel Investors Group',
+            jurisdiction: 'California, USA',
+            businessType: 'Investment Group'
           }
         ],
         board: [
           {
-            id: 'director-1',
-            name: 'Director 1',
+            id: 'li-xiaoping',
+            name: 'Li Xiaoping',
             type: 'board',
             risk: 'HIGH',
-            appointedBy: 'Eastern Star Holdings',
-            nationality: 'Country X',
-            details: 'Foreign-appointed board member',
-            influence: 'MAJOR'
+            appointedBy: 'Shenyang Industrial Holdings',
+            nationality: 'Chinese',
+            details: 'Senior executive from Shenyang Industrial Holdings',
+            influence: 'MAJOR',
+            title: 'Chairman',
+            background: 'Former Deputy Director, Shenyang Municipal Government'
           },
           {
-            id: 'director-2', 
-            name: 'Director 2',
+            id: 'wang-mingwei', 
+            name: 'Wang Mingwei',
             type: 'board',
             risk: 'HIGH',
-            appointedBy: 'Eastern Star Holdings',
-            nationality: 'Country X',
-            details: 'Foreign-appointed board member',
-            influence: 'MAJOR'
+            appointedBy: 'Shenyang Industrial Holdings',
+            nationality: 'Chinese',
+            details: 'Technology executive with state enterprise background',
+            influence: 'MAJOR',
+            title: 'Director',
+            background: 'Former CTO, China National Heavy Machinery Corporation'
           },
           {
-            id: 'director-3',
-            name: 'Director 3', 
+            id: 'zhang-huawei',
+            name: 'Zhang Huawei', 
             type: 'board',
             risk: 'HIGH',
-            appointedBy: 'Eastern Star Holdings',
-            nationality: 'Country X',
-            details: 'Foreign-appointed board member',
-            influence: 'MAJOR'
+            appointedBy: 'Shenyang Industrial Holdings',
+            nationality: 'Chinese',
+            details: 'Financial executive from parent company',
+            influence: 'MAJOR',
+            title: 'Director',
+            background: 'CFO, Shenyang Industrial Holdings'
           },
           {
-            id: 'director-4',
-            name: 'Director 4',
+            id: 'john-smith',
+            name: 'John Smith',
             type: 'board',
             risk: 'LOW',
             appointedBy: 'US Founders',
-            nationality: 'USA',
-            details: 'US founder representative'
+            nationality: 'American',
+            details: 'Co-founder and lead engineer',
+            title: 'Director',
+            background: 'Former Principal Engineer, Lockheed Martin'
           },
           {
-            id: 'director-5',
-            name: 'Director 5',
+            id: 'sarah-johnson',
+            name: 'Sarah Johnson',
             type: 'board', 
             risk: 'LOW',
             appointedBy: 'US Angels',
-            nationality: 'USA',
-            details: 'US investor representative'
+            nationality: 'American',
+            details: 'Venture capital representative',
+            title: 'Director',
+            background: 'Partner, Silicon Valley Ventures'
           }
         ],
         executives: [
           {
-            id: 'ceo',
-            name: 'John Doe (CEO)',
+            id: 'john-doe',
+            name: 'John Doe',
             type: 'executive',
             risk: 'LOW',
-            nationality: 'USA',
-            details: 'US citizen chief executive'
+            nationality: 'American',
+            details: 'US citizen chief executive',
+            title: 'CEO',
+            background: 'Former VP Engineering, Apple Inc.'
           },
           {
-            id: 'cto',
-            name: 'Ivan Vorpatril (CTO)',
+            id: 'wei-chen',
+            name: 'Wei Chen',
             type: 'executive', 
             risk: 'MEDIUM',
-            nationality: 'USA/Country X',
-            details: 'Dual citizen with foreign ties',
-            concern: 'DUAL_CITIZENSHIP'
+            nationality: 'Dual (US/China)',
+            details: 'Dual citizen with Chinese government research background',
+            concern: 'DUAL_CITIZENSHIP',
+            title: 'CTO',
+            background: 'Former Senior Researcher, Beijing Advanced Technology Institute',
+            securityClearance: 'Secret (US)'
           }
         ]
       };
@@ -149,7 +173,10 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
             risk: 'LOW',
             ownership: '80%',
             country: 'USA', 
-            details: 'Domestic founding group'
+            details: 'Domestic founding group',
+            fullName: 'US Founders Group LLC',
+            jurisdiction: 'Delaware, USA',
+            businessType: 'Founder Group'
           },
           {
             id: 'us-venture',
@@ -158,51 +185,64 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
             risk: 'LOW',
             ownership: '20%',
             country: 'USA',
-            details: 'Transparent US limited partners'
+            details: 'Transparent US limited partners',
+            fullName: 'US Venture Partners LP',
+            jurisdiction: 'Delaware, USA',
+            businessType: 'Venture Capital'
           }
         ],
         board: [
           {
-            id: 'board-1',
-            name: 'Board Member 1',
+            id: 'michael-thompson',
+            name: 'Michael Thompson',
             type: 'board',
             risk: 'LOW',
-            nationality: 'USA',
-            details: 'US citizen with clean background'
+            nationality: 'American',
+            details: 'US citizen with clean background',
+            title: 'Chairman',
+            background: 'Former Colonel, US Army'
           },
           {
-            id: 'board-2',
-            name: 'Board Member 2', 
+            id: 'jennifer-davis',
+            name: 'Jennifer Davis', 
             type: 'board',
             risk: 'LOW',
-            nationality: 'USA',
-            details: 'US citizen with clean background'
+            nationality: 'American',
+            details: 'US citizen with clean background',
+            title: 'Director',
+            background: 'Former VP, Raytheon Technologies'
           },
           {
-            id: 'board-3',
-            name: 'Board Member 3',
+            id: 'robert-wilson',
+            name: 'Robert Wilson',
             type: 'board',
             risk: 'LOW', 
-            nationality: 'USA',
-            details: 'US citizen with clean background'
+            nationality: 'American',
+            details: 'US citizen with clean background',
+            title: 'Director',
+            background: 'Former Director, DARPA'
           }
         ],
         executives: [
           {
-            id: 'liberty-ceo',
-            name: 'CEO',
+            id: 'james-harrison',
+            name: 'James Harrison',
             type: 'executive',
             risk: 'LOW',
-            nationality: 'USA',
-            details: 'US citizen executive'
+            nationality: 'American',
+            details: 'US citizen executive',
+            title: 'CEO',
+            background: 'Former VP, General Dynamics'
           },
           {
-            id: 'liberty-cto',
-            name: 'CTO',
+            id: 'emily-rodriguez',
+            name: 'Emily Rodriguez',
             type: 'executive',
             risk: 'LOW', 
-            nationality: 'USA',
-            details: 'US citizen executive'
+            nationality: 'American',
+            details: 'US citizen executive',
+            title: 'CTO',
+            background: 'Former Principal Engineer, Boeing'
           }
         ]
       };
@@ -296,6 +336,12 @@ const OrgChart: React.FC<OrgChartProps> = ({ dossierId, analysisData, onNodeSele
           <h3 className={`font-semibold text-white ${size === 'large' ? 'text-lg' : 'text-sm'} mb-1`}>
             {node.name}
           </h3>
+          
+          {node.title && (
+            <p className={`text-cyan-300 font-medium ${size === 'large' ? 'text-sm' : 'text-xs'} mb-1`}>
+              {node.title}
+            </p>
+          )}
           
           {node.ownership && (
             <div className={`text-cyan-300 font-bold ${size === 'large' ? 'text-base' : 'text-xs'} mb-2`}>
