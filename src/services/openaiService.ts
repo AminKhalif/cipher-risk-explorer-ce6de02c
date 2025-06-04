@@ -113,3 +113,40 @@ Provide response as JSON with: newRiskScore (0-100), newRiskLevel, impactSummary
     throw error;
   }
 };
+
+export const generateOptimalMitigationPaths = async (analysisData: any) => {
+  try {
+    const openai = getOpenAIClient();
+    
+    const prompt = `Based on the FOCI analysis showing risk score ${analysisData.riskScore} and risks: ${analysisData.risks.map((r: any) => r.description).join('; ')}, suggest 3 optimal mitigation pathways that balance risk reduction with business continuity. For each pathway, specify exact parameter values for ownership percentage, board composition, financing changes, and personnel actions. Consider regulatory compliance thresholds (e.g., 25% foreign ownership) and practical implementation challenges.
+
+Provide response as JSON array with pathways containing: name, description, parameters (ownership, boardSeats, financing, personnel), effort (Low/Medium/High), timeframe, businessImpact, and riskReduction.`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert in FOCI mitigation strategy, balancing national security requirements with business viability.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.4,
+      max_tokens: 1200
+    });
+
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error('No response from OpenAI');
+    }
+
+    return JSON.parse(content);
+    
+  } catch (error) {
+    console.error('Optimal path generation failed:', error);
+    throw error;
+  }
+};

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Beaker, TrendingDown, Shield, Users, DollarSign, Building, User, CheckCircle, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Beaker, TrendingDown, Shield, Users, DollarSign, Building, User, CheckCircle, AlertCircle, Lightbulb, Zap, Target, Brain } from 'lucide-react';
 import { analyzeMitigationImpact } from '@/services/openaiService';
 
 interface MitigationLabProps {
@@ -23,6 +23,54 @@ const MitigationLab: React.FC<MitigationLabProps> = ({ dossierId, initialAnalysi
 
   const [mitigatedAnalysis, setMitigatedAnalysis] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<any>(null);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  // AI-suggested optimal pathways
+  const aiOptimalPathways = [
+    {
+      name: "Quick Compliance",
+      description: "Fastest route to regulatory compliance",
+      icon: Zap,
+      changes: {
+        easternStarOwnership: 25,
+        foreignBoardSeats: 2,
+        eliminateForeignFinancing: true,
+        addressCtoTies: true
+      },
+      effort: "Medium",
+      timeframe: "6-12 months",
+      impact: "High compliance, maintains some foreign investment"
+    },
+    {
+      name: "Maximum Security",
+      description: "Eliminate all major FOCI concerns",
+      icon: Shield,
+      changes: {
+        easternStarOwnership: 10,
+        foreignBoardSeats: 0,
+        eliminateForeignFinancing: true,
+        addressCtoTies: true
+      },
+      effort: "High",
+      timeframe: "12-18 months",
+      impact: "Complete risk elimination, may affect growth"
+    },
+    {
+      name: "Balanced Approach",
+      description: "Optimal balance of risk reduction and business continuity",
+      icon: Target,
+      changes: {
+        easternStarOwnership: 20,
+        foreignBoardSeats: 1,
+        eliminateForeignFinancing: true,
+        addressCtoTies: false
+      },
+      effort: "Medium",
+      timeframe: "9-15 months",
+      impact: "Significant risk reduction with business flexibility"
+    }
+  ];
 
   // Calculate impact in real-time
   useEffect(() => {
@@ -62,6 +110,11 @@ const MitigationLab: React.FC<MitigationLabProps> = ({ dossierId, initialAnalysi
     calculateImpact();
   }, [mitigationSettings, initialAnalysis.riskScore]);
 
+  const applyAiSuggestion = (pathway: any) => {
+    setMitigationSettings(pathway.changes);
+    setShowSuggestions(false);
+  };
+
   const getRiskColor = (level: string) => {
     switch (level) {
       case 'HIGH':
@@ -73,6 +126,19 @@ const MitigationLab: React.FC<MitigationLabProps> = ({ dossierId, initialAnalysi
         return 'text-green-400';
       default:
         return 'text-gray-400';
+    }
+  };
+
+  const getEffortColor = (effort: string) => {
+    switch (effort) {
+      case 'High':
+        return 'bg-red-100 text-red-800';
+      case 'Medium':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'Low':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -97,31 +163,94 @@ const MitigationLab: React.FC<MitigationLabProps> = ({ dossierId, initialAnalysi
           </div>
         </div>
 
-        {/* Risk Score Comparison */}
-        <div className="flex items-center space-x-8">
+        {/* AI Suggestions Toggle */}
+        <Button
+          onClick={() => setShowSuggestions(!showSuggestions)}
+          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+        >
+          <Brain className="h-4 w-4 mr-2" />
+          AI Suggestions
+          {showSuggestions ? <AlertCircle className="h-4 w-4 ml-2" /> : <Lightbulb className="h-4 w-4 ml-2" />}
+        </Button>
+      </div>
+
+      {/* AI Suggestions Panel */}
+      {showSuggestions && (
+        <Card className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 border-purple-500/30 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center">
+              <Brain className="h-5 w-5 mr-2 text-purple-400" />
+              AI-Recommended Pathways
+            </CardTitle>
+            <p className="text-gray-300 text-sm">
+              CIPHER AI has analyzed optimal routes for risk reduction based on regulatory requirements and business impact
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {aiOptimalPathways.map((pathway, index) => (
+                <div key={index} className="p-4 bg-slate-800/50 rounded-lg border border-slate-600 hover:border-purple-400 transition-all">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <pathway.icon className="h-6 w-6 text-purple-400" />
+                    <div>
+                      <h3 className="font-semibold text-white">{pathway.name}</h3>
+                      <p className="text-xs text-gray-400">{pathway.description}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-300">Effort:</span>
+                      <Badge className={`text-xs ${getEffortColor(pathway.effort)}`}>
+                        {pathway.effort}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-300">Timeline:</span>
+                      <span className="text-white text-xs">{pathway.timeframe}</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-xs text-gray-400 mb-3">{pathway.impact}</p>
+                  
+                  <Button
+                    onClick={() => applyAiSuggestion(pathway)}
+                    className="w-full bg-purple-600 hover:bg-purple-700 text-sm"
+                    size="sm"
+                  >
+                    Apply This Pathway
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Risk Score Comparison */}
+      <div className="flex items-center space-x-8 justify-center">
+        <div className="text-center">
+          <p className="text-xs text-gray-400 mb-1">Original Risk</p>
+          <div className="text-xl font-bold text-red-400">{initialAnalysis.riskScore}</div>
+          <Badge variant="destructive" className="text-xs">CRITICAL</Badge>
+        </div>
+        <div className="text-4xl text-gray-400">→</div>
+        <div className="text-center">
+          <p className="text-xs text-gray-400 mb-1">Projected Risk</p>
+          <div className={`text-xl font-bold ${getRiskColor(currentLevel)}`}>{currentScore}</div>
+          <Badge className={`text-xs ${currentLevel === 'LOW' ? 'bg-green-600 hover:bg-green-700' : currentLevel === 'MODERATE' ? 'bg-yellow-600' : 'bg-red-600'}`}>
+            {currentLevel}
+          </Badge>
+        </div>
+        {mitigatedAnalysis?.riskReduction > 0 && (
           <div className="text-center">
-            <p className="text-xs text-gray-400 mb-1">Original Risk</p>
-            <div className="text-xl font-bold text-red-400">{initialAnalysis.riskScore}</div>
-            <Badge variant="destructive" className="text-xs">CRITICAL</Badge>
-          </div>
-          <div className="text-4xl text-gray-400">→</div>
-          <div className="text-center">
-            <p className="text-xs text-gray-400 mb-1">Projected Risk</p>
-            <div className={`text-xl font-bold ${getRiskColor(currentLevel)}`}>{currentScore}</div>
-            <Badge className={`text-xs ${currentLevel === 'LOW' ? 'bg-green-600 hover:bg-green-700' : currentLevel === 'MODERATE' ? 'bg-yellow-600' : 'bg-red-600'}`}>
-              {currentLevel}
+            <p className="text-xs text-gray-400 mb-1">Risk Reduced</p>
+            <div className="text-xl font-bold text-green-400">-{mitigatedAnalysis.riskReduction}</div>
+            <Badge variant="outline" className="text-xs border-green-500 text-green-300">
+              IMPROVEMENT
             </Badge>
           </div>
-          {mitigatedAnalysis?.riskReduction > 0 && (
-            <div className="text-center">
-              <p className="text-xs text-gray-400 mb-1">Risk Reduced</p>
-              <div className="text-xl font-bold text-green-400">-{mitigatedAnalysis.riskReduction}</div>
-              <Badge variant="outline" className="text-xs border-green-500 text-green-300">
-                IMPROVEMENT
-              </Badge>
-            </div>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Main Content Grid */}
@@ -130,8 +259,8 @@ const MitigationLab: React.FC<MitigationLabProps> = ({ dossierId, initialAnalysi
         <div className="col-span-5 space-y-4">
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
-              <CardTitle className="text-white text-lg">Risk Reduction Actions</CardTitle>
-              <p className="text-sm text-gray-400">Adjust these factors to see how they impact the overall risk score</p>
+              <CardTitle className="text-white text-lg">Manual Risk Reduction Controls</CardTitle>
+              <p className="text-sm text-gray-400">Fine-tune these factors to see how they impact the overall risk score</p>
             </CardHeader>
             <CardContent className="space-y-6">
               
